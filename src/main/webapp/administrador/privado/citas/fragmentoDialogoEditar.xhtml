@@ -44,7 +44,8 @@
 
                         <h:outputLabel value="Estado:" for="estado"/>
                         <h:selectOneMenu value="#{gestionCitasControlador.citaActual.estado}" >
-                            <f:selectItems value="#{gestionCitasControlador.estadosCitas}" />
+                            <f:selectItems value="#{gestionCitasControlador.estadosCitas}"/> 
+                            
                         </h:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton value="Guardar" actionListener="#{gestionCitasControlador.doGuardarEditado()}"  

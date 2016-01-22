@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+   <ui:composition>
+        <p:dialog id="dialogoFinCita" widgetVar="DialogoFinCita" modal="true" resizable="false" appendTo="@(body)" header="Finalizar Cita">
+            <h:form id="formularioFinCita">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="1">
+                        
+                        <h:outputLabel value="Estado:" for="estado"/>
+                        <h:selectOneRadio value="#{gestionCitasControlador.citaActual.estado}" >
+                            <f:selectItem itemValue="COMPLETADA" itemLabel="COMPLETADA" />
+                            <f:selectItem itemValue="AUSENTE" itemLabel="AUSENTE" />
+                        </h:selectOneRadio>
+                    </p:panelGrid>
+                    <p:commandButton value="Guardar" actionListener="#{gestionCitasControlador.doGuardarEditado()}"  
+                                     update="display" 
+                                     oncomplete="PF('DialogoFinCita').hide()"
+                                     disabled="#{empty gestionCitasControlador.citaActual}"/>
+                    <p:commandButton value="Cancelar" onclick="PF('DialogoFinCita').hide()" disabled="#{empty gestionCitasControlador.citaActual}"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

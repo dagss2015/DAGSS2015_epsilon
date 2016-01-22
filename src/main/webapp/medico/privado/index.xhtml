@@ -8,19 +8,57 @@
 
     <body>
 
-        <ui:composition template="/plantillas/plantillaGlobal.xhtml">
-
+       <ui:composition template="/plantillas/plantillaGlobal.xhtml">
+            
             <ui:define name="tituloPagina">
-                tituloPagina
+                Agenda del Día
             </ui:define>            
 
-            <ui:define name="izquierda">
-                izquierda
+           <ui:define name="izquierda">
+                <ui:include src="/medico/plantillas/menuMedico.xhtml"/>
             </ui:define>
-
+                 
+                 
             <ui:define name="contenido">
-            </ui:define>
-        </ui:composition>
+                <h:form id="formularioListado">
+                    <p:panel>
+                        <p:dataTable id="tablaAgenda"
+                        value="#{medicoControlador.citasParaHoy()}"
+                        var="cita"
+                        selection="#{gestionCitasControlador.citaActual}"
+                                     selectionMode="single" 
+                                     paginator="true" paginatorPosition="bottom" rows="10" rowKey="#{cita.id}">
+                            
 
+                             <p:ajax event="rowSelect"   update="botonEditar botonVer"/>
+                            
+                            <p:column headerText="Paciente">
+                                <p:outputLabel value="#{cita.paciente.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Hora">
+                                <p:outputLabel value="#{cita.hora}" >
+                                    <f:convertDateTime pattern="hh:mm"/>
+                                </p:outputLabel>
+                            </p:column>
+
+                             <p:column headerText="Estado">
+                                <p:outputLabel value="#{cita.estado}"/>
+                                                               
+                               
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton id="botonEditar" icon="ui-icon-pencil" value="Modificar Estado" update=":formularioEditar" oncomplete="PF('DialogoEditar').show()" disabled="#{empty gestionCitasControlador.citaActual}"/>
+                                <p:commandButton id="botonVer" icon="ui-icon-pencil" value="Gestionar Tratamientos" action="#{medicoControlador.doShowTratamiento()}" disabled="#{empty gestionCitasControlador.citaActual}"/>
+
+                                 </f:facet>
+                        </p:dataTable>
+                      </p:panel>      
+                </h:form>
+                
+                 <ui:include src="fragmentoDialogoEditar.xhtml"/>
+               
+            </ui:define>
+               
+        </ui:composition>
     </body>
 </html>

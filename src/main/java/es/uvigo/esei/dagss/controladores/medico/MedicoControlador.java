@@ -5,12 +5,17 @@ package es.uvigo.esei.dagss.controladores.medico;
 
 import es.uvigo.esei.dagss.controladores.autenticacion.AutenticacionControlador;
 import es.uvigo.esei.dagss.dominio.daos.CitaDAO;
+import es.uvigo.esei.dagss.dominio.daos.MedicamentoDAO;
 import es.uvigo.esei.dagss.dominio.daos.MedicoDAO;
+import es.uvigo.esei.dagss.dominio.entidades.Cita;
+import es.uvigo.esei.dagss.dominio.entidades.Medicamento;
 import es.uvigo.esei.dagss.dominio.entidades.Medico;
 import es.uvigo.esei.dagss.dominio.entidades.TipoUsuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -29,6 +34,10 @@ public class MedicoControlador implements Serializable {
     private String dni;
     private String numeroColegiado;
     private String password;
+        
+    private String textoBusqueda;
+    List<Medicamento> medicamento;
+    
 
     @Inject
     private AutenticacionControlador autenticacionControlador;
@@ -36,6 +45,12 @@ public class MedicoControlador implements Serializable {
 
     @EJB
     private MedicoDAO medicoDAO;
+    
+    @EJB
+    CitaDAO citaDao;
+    
+    @EJB
+    MedicamentoDAO medicamentoDao;
 
     /**
      * Creates a new instance of AdministradorControlador
@@ -110,9 +125,44 @@ public class MedicoControlador implements Serializable {
         }
         return destino;
     }
+    
+     public String getTextoBusqueda() {
+        return textoBusqueda;
+    }
+
+    public void setTextoBusqueda(String textoBusqueda) {
+        this.textoBusqueda = textoBusqueda;
+    }
+    
+    public List<Medicamento> getMedicamentos() {
+        return medicamento;
+    }
+
+    public void setMedicamentos(List<Medicamento> medicamento) {
+        this.medicamento = medicamento;
+    }
 
     //Acciones
     public String doShowCita() {
         return "detallesCita";
     }
+    
+        
+    public String doShowTratamiento(){        
+        return "listadoTratamiento";
+    }
+    
+    
+    public List<Cita> citasParaHoy(){
+        return citaDao.buscarCitasPorMedicoFecha(medicoActual.getId(), Calendar.getInstance().getTime());
+    }
+    
+    public List<Medicamento>listaMedicamentos(){
+        medicamento = medicamentoDao.buscarMedicamento(textoBusqueda);
+        return medicamento;
+    }
+    
+    
+    
+
 }

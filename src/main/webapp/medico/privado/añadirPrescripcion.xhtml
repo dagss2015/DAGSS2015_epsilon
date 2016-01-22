@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+   <ui:composition>
+        <p:dialog id="dialogoAñadirPrescripcion" widgetVar="DialogoAñadirPrescripcion" modal="true" resizable="false" appendTo="@(body)" header="Añadir Prescripcion">
+            <h:form id="formularioAñadirPrescripcion">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Indicaciones:"/>
+                        <p:inputText value="#{gestionTratamientoControlador.indicaciones}" />
+                     
+                        <p:outputLabel value="Dosis:"/>
+                        <p:inputText value="#{gestionTratamientoControlador.dosis}" />
+                        
+                        <p:outputLabel value="Medicamento:"/>
+                        <p:inputText value="#{medicoControlador.textoBusqueda}" />
+                        
+                        <p:outputLabel value="Buscar:"/>
+                        <p:commandButton id="botonBuscar" icon="ui-icon-search" value="Buscar Medicamento" action="#{medicoControlador.listaMedicamentos}"
+                                         update="dataTable"/>
+                        
+                        <p:outputLabel value="Detalles Medicamento:"/>
+                        <p:dataTable id="dataTable" value="#{medicoControlador.medicamentos}" var="medicamento"
+                                     selection="#{gestionMedicamentosControlador.medicamentoActual}"
+                                     selectionMode="single" 
+                                     rows="10" rowKey="#{medicamento.id}" >
+                                
+                            <p:column headerText="Nombre">
+                                <p:outputLabel value="#{medicamento.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Fabricante">
+                                <p:outputLabel value="#{medicamento.fabricante}"/>
+                            </p:column>
+
+                            <p:column headerText="Principio Activo">
+                                <p:outputLabel value="#{medicamento.principioActivo}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Familia">
+                                <h:outputText value="#{medicamento.familia}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Numero Dosis">
+                                <p:outputLabel value="#{medicamento.numeroDosis}"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton icon="ui-icon-plus" value="Añadir"                                                  
+                                                 actionListener="#{gestionTratamientoControlador.doNuevaPrescripcion(gestionMedicamentosControlador.medicamentoActual)}"
+                                                 update=":detalleTratamiento:dataTablePrescripcion"
+                                                 oncomplete="PF('DialogoAñadirPrescripcion').hide()"/>
+                                
+                                <p:commandButton value="Cancelar" onclick="PF('DialogoVerPresccripcion').hide()"/>
+                
+                            </f:facet>
+                        </p:dataTable>
+                    </p:panelGrid>
+                     </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
